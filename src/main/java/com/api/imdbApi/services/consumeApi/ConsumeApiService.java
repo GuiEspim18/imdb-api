@@ -1,4 +1,4 @@
-package com.api.imdbApi.services;
+package com.api.imdbApi.services.consumeApi;
 
 import java.io.IOException;
 import java.net.URI;

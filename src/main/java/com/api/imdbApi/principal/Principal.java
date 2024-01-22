@@ -1,6 +1,6 @@
 package com.api.imdbApi.principal;
 
-import com.api.imdbApi.services.ConsumeApiService;
+import com.api.imdbApi.services.consumeApi.ConsumeApiService;
 
 import java.util.Scanner;
 
