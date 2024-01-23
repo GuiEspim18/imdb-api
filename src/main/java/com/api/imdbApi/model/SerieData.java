@@ -10,7 +10,8 @@ public record SerieData(
         String Director,
         String Writer,
         String Actors,
-        String Year
+        String Year,
+        @JsonAlias("totalSeasons") String Seasons
 ) {
 }
 

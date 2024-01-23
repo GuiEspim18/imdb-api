@@ -1,5 +1,6 @@
 package com.api.imdbApi.services.messages;
 
+import com.api.imdbApi.model.EpisodeData;
 import com.api.imdbApi.model.SeasonData;
 import com.api.imdbApi.model.SerieData;
 
@@ -10,7 +11,7 @@ import java.text.MessageFormat;
 
 public class Messages {
 
-    public static void showSerie (SerieData data) throws InvocationTargetException, IllegalAccessException {
+    public static void show(Record data) throws InvocationTargetException, IllegalAccessException {
         RecordComponent[] fields = data.getClass().getRecordComponents();
         System.out.println("___________________________________");
         for (RecordComponent field : fields) {
@@ -18,10 +19,6 @@ public class Messages {
             System.out.println(MESSAGE);
         }
         System.out.println("___________________________________");
-    }
-
-    public static void showSeasons (SeasonData data) {
-
     }
 
 
