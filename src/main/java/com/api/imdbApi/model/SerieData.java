@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record SerieData(
-        @JsonAlias("Title") String Titulo,
-        @JsonAlias("Genre") String Genero,
-        @JsonAlias("Director") String Diretor,
-        @JsonAlias("Writer") String Escritor,
-        @JsonAlias("Actors") String Elenco,
-        @JsonAlias("Year") String Ano
+        String Title,
+        String Genre,
+        String Director,
+        String Writer,
+        String Actors,
+        String Year
 ) {
 }
 

@@ -17,10 +17,9 @@ public class Principal {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void show () throws InvocationTargetException, IllegalAccessException {
-        System.out.print("Digite o nome de uma série: ");
+        System.out.print("Tap a serie name: ");
         final String SERIE = scanner.nextLine().replace(" ", "+").toLowerCase();
         var result = Converter.convert(ConsumeApiService.get(ADDRESS + SERIE + API_KEY), SerieData.class);
-//        System.out.println(result);
         Messages.showSerie(result);
     }
 
