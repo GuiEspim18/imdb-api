@@ -1,5 +1,6 @@
 package com.api.imdbApi.services.messages;
 
+import com.api.imdbApi.model.SeasonData;
 import com.api.imdbApi.model.SerieData;
 
 import java.lang.reflect.InvocationTargetException;
@@ -16,6 +17,11 @@ public class Messages {
             final String MESSAGE = MessageFormat.format("{0}: {1}", field.getName(), field.getAccessor().invoke(data));
             System.out.println(MESSAGE);
         }
+        System.out.println("___________________________________");
+    }
+
+    public static void showSeasons (SeasonData data) {
+
     }
 
 

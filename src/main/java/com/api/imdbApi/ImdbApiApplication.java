@@ -15,7 +15,7 @@ public class ImdbApiApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run (String... args) throws InvocationTargetException, IllegalAccessException {
+	public void run (String... args) {
 		Principal.show();
 	}
 
