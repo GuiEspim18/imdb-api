@@ -4,6 +4,7 @@ import com.api.imdbApi.exceptions.InvalidOptionException;
 import com.api.imdbApi.exceptions.NotFoundEpisodeException;
 import com.api.imdbApi.exceptions.NotFoundSeasonException;
 import com.api.imdbApi.model.EpisodeData;
+import com.api.imdbApi.model.SeasonData;
 import com.api.imdbApi.model.SerieData;
 import com.api.imdbApi.services.consumeApi.ConsumeApiService;
 import com.api.imdbApi.services.converter.Converter;
@@ -58,19 +59,10 @@ public class Principal {
 
     private static void getOptions(Integer option) throws InvocationTargetException, IllegalAccessException, InvalidOptionException, NotFoundSeasonException, NotFoundEpisodeException {
         switch (option) {
-            case 1:
-                showSerie();
-                break;
-
-            case 2:
-                showEpisode();
-                break;
-
-            case 3:
-                break;
-
-            default:
-                throw new InvalidOptionException();
+            case 1: showSerie(); break;
+            case 2: showEpisode(); break;
+            case 3: showSeason(); break;
+            default: throw new InvalidOptionException();
         }
     }
 
@@ -101,6 +93,20 @@ public class Principal {
         }
         Messages.show(result);
 
+    }
+
+    private static void showSeason() throws InvocationTargetException, IllegalAccessException, NotFoundSeasonException {
+        showSerie();
+        var message = MessageFormat.format("Tap a season of {0}: ", serie.Title());
+        System.out.print(message);
+        final int LIMIT = Integer.parseInt(serie.Seasons());
+        final int CUR_SEASON = Integer.parseInt(scanner.nextLine());
+        final String SERIE = serie.Title().replace(" ", "+").toLowerCase();
+        if (CUR_SEASON < 1 && CUR_SEASON > LIMIT ) {
+            throw new NotFoundSeasonException();
+        }
+        var result = Converter.convert(ConsumeApiService.get(ADDRESS + SERIE + SEASON + CUR_SEASON + API_KEY), SeasonData.class);
+        Messages.show(result);
     }
 
 
