@@ -3,6 +3,7 @@ package com.api.imdbApi.principal;
 import com.api.imdbApi.exceptions.InvalidOptionException;
 import com.api.imdbApi.exceptions.NotFoundEpisodeException;
 import com.api.imdbApi.exceptions.NotFoundSeasonException;
+import com.api.imdbApi.model.Episode;
 import com.api.imdbApi.model.EpisodeData;
 import com.api.imdbApi.model.SeasonData;
 import com.api.imdbApi.model.SerieData;
@@ -13,6 +14,8 @@ import com.api.imdbApi.services.messages.Messages;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -134,8 +137,26 @@ public class Principal {
                    .limit(5)
                    .forEach(System.out::println);
 
-//        Messages.show((Record) episodeData);
+        List<Episode> episodes = seasons.stream()
+                                        .flatMap(s -> s.Episodes().stream().map(e -> new Episode(s.Season(), e)))
+                                        .collect(Collectors.toList());
 
+        System.out.print("Tap an year that you want to search on list: ");
+        var year = scanner.nextInt();
+        scanner.nextLine();
+
+        LocalDate searchDate = LocalDate.of(year, 1, 1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        episodes.stream()
+                .filter(e -> e.getReleased() != null && e.getReleased().isAfter(searchDate))
+                .forEach(e -> System.out.print(
+                        "\n_________________________________________________" +
+                        "\nSeason: " + e.getSeason() +
+                        "\nEpisode: " + e.getTitle() +
+                        "\nRelease Date: " + e.getReleased().format(formatter)
+                ));
     }
 
 
