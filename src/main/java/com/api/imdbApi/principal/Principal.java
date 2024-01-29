@@ -13,10 +13,7 @@ import com.api.imdbApi.services.messages.Messages;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -125,14 +122,20 @@ public class Principal {
             SeasonData season = Converter.convert(result, SeasonData.class);
             seasons.add(season);
         }
-        seasons.forEach(System.out::println);
 
         // pegando todos os episodios de todas as temporadas e jogandod entro de um array
         // podemos usar o .collect(Collectors.toList()) ou o .toList mas o .toList vai gerar uma lista imutavel que não podemos adicionair mais itens
-        List<EpisodeData>episodeData = seasons.stream()
-                                        .flatMap(s -> s.Episodes().stream())
-//                                        .collect(Collectors.toList());
-                                        .toList();
+        List<EpisodeData> episodeData = seasons.stream()
+                                              .flatMap(s -> s.Episodes().stream())
+                                              .collect(Collectors.toList());
+        episodeData.stream()
+                   .filter(e -> !e.Rate().equalsIgnoreCase("N/A"))
+                   .sorted(Comparator.comparing(EpisodeData::Rate).reversed())
+                   .limit(5)
+                   .forEach(System.out::println);
+
+//        Messages.show((Record) episodeData);
+
     }
 
 
