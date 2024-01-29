@@ -1,8 +1,6 @@
 package com.api.imdbApi.services.messages;
 
 import com.api.imdbApi.model.EpisodeData;
-import com.api.imdbApi.model.SeasonData;
-import com.api.imdbApi.model.SerieData;
 import com.api.imdbApi.services.validaors.dataTypes.DataTypes;
 
 import java.lang.reflect.InvocationTargetException;
@@ -23,13 +21,13 @@ public class Messages {
             var message = "";
             if (IS_LIST) {
                 List<EpisodeData> list = (List<EpisodeData>) Arrays.asList(getData).get(0);
-                String episodes = "";
+                StringBuilder episodes = new StringBuilder();
                 int index = 1;
                 for (EpisodeData item : list) {
-                    episodes += MessageFormat.format("{0}: {1} \n", index, item.Title());
+                    episodes.append(MessageFormat.format("{0}: {1} \n", index, item.Title()));
                     index++;
                 }
-                message = MessageFormat.format("{0}: \n{1}", field.getName(), episodes);
+                message = MessageFormat.format("{0}: \n{1}", field.getName(), episodes.toString());
             } else {
                 message = MessageFormat.format("{0}: {1}", field.getName(), getData);
             }

@@ -10,10 +10,14 @@ import com.api.imdbApi.services.consumeApi.ConsumeApiService;
 import com.api.imdbApi.services.converter.Converter;
 import com.api.imdbApi.services.messages.Messages;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Principal {
@@ -38,7 +42,7 @@ public class Principal {
     private static void showMenu() {
         System.out.println("___________________________________");
         System.out.println("Choose an option:");
-        List<String> options = List.of(new String[]{"Get a serie", "Get a serie episode", "Get a serie season"});
+        List<String> options = Arrays.asList("Get a serie", "Get a serie episode", "Get a serie season", "Get bests episodes from a serie");
         IntStream.range(0, options.size()).forEach(i -> {
             int index = i + 1;
             final String MESSAGE = MessageFormat.format("{0}: {1}", index, options.get(i));
@@ -62,6 +66,7 @@ public class Principal {
             case 1: showSerie(); break;
             case 2: showEpisode(); break;
             case 3: showSeason(); break;
+            case 4: showBestEpisodes(); break;
             default: throw new InvalidOptionException();
         }
     }
@@ -107,6 +112,27 @@ public class Principal {
         }
         var result = Converter.convert(ConsumeApiService.get(ADDRESS + SERIE + SEASON + CUR_SEASON + API_KEY), SeasonData.class);
         Messages.show(result);
+    }
+
+
+    private static void showBestEpisodes() throws InvocationTargetException, IllegalAccessException {
+        showSerie();
+        List<SeasonData> seasons = new ArrayList<>();
+        final String SERIE = serie.Title().replace(" ", "+").toLowerCase();
+        System.out.println("Loading...");
+        for (int i = 1; i <= Integer.parseInt(serie.Seasons()); i++) {
+            var result = ConsumeApiService.get(ADDRESS + SERIE + SEASON + i + API_KEY);
+            SeasonData season = Converter.convert(result, SeasonData.class);
+            seasons.add(season);
+        }
+        seasons.forEach(System.out::println);
+
+        // pegando todos os episodios de todas as temporadas e jogandod entro de um array
+        // podemos usar o .collect(Collectors.toList()) ou o .toList mas o .toList vai gerar uma lista imutavel que não podemos adicionair mais itens
+        List<EpisodeData>episodeData = seasons.stream()
+                                        .flatMap(s -> s.Episodes().stream())
+//                                        .collect(Collectors.toList());
+                                        .toList();
     }
 
 
